@@ -18,6 +18,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.weatherapp.ForecastActivity.Companion.EXTRA_LATITUDE
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.squareup.picasso.Callback
@@ -36,6 +37,7 @@ private lateinit var txtWind: TextView
 private lateinit var txtHumidity: TextView
 private lateinit var imgWeather: ImageView
 private lateinit var txt_next_seven_days: TextView
+private lateinit var iconLocation: ImageView
 private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 private val apiKey = "a863eb50a11a18b6b9b2d9badc169c24"
@@ -57,6 +59,7 @@ class MyLocationActivity : AppCompatActivity() {
         txtWind = findViewById(R.id.txtWind)
         txtHumidity = findViewById(R.id.txtHumidity)
         imgWeather = findViewById(R.id.imgWeather)
+        iconLocation = findViewById(R.id.iconLocation)
         txt_next_seven_days = findViewById(R.id.txt_next_seven_days)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -86,6 +89,11 @@ class MyLocationActivity : AppCompatActivity() {
                             startActivity(intent)
 //                            startActivity(Intent(this, ForecastActivity::class.java))
                         }
+                        iconLocation.setOnClickListener {
+                            val intent = Intent(this, ManageLocationActivity::class.java)
+                            startActivity(intent)
+                        }
+
 
 
                     } else {
@@ -215,6 +223,7 @@ class MyLocationActivity : AppCompatActivity() {
                 1
             )
         }
+
     }
 
     private fun showProgressDialog(message: String) {

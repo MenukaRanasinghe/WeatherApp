@@ -1,5 +1,6 @@
 package com.example.weatherapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,8 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.weatherapp.ForecastActivity.Companion.EXTRA_LATITUDE
+import com.example.weatherapp.ForecastActivity.Companion.EXTRA_LONGITUDE
 import com.squareup.picasso.Picasso
 import org.json.JSONArray
 import org.json.JSONObject
@@ -42,7 +45,7 @@ class ForecastActivity : AppCompatActivity() {
     private lateinit var recycle_forecast : RecyclerView
     private var forecastList = JSONArray()
     private lateinit var forecastAdapter : ForecastAdapter
-
+    lateinit var iconBack : ImageView
 
     companion object {
         const val EXTRA_LATITUDE = "extra_latitude"
@@ -70,6 +73,7 @@ class ForecastActivity : AppCompatActivity() {
         txt_tommorow_humidity = findViewById(R.id.txt_tommorow_humidity)
         txt_tommorow_humidity_des = findViewById(R.id.txt_tommorow_humidity_des)
         recycle_forecast = findViewById(R.id.recycle_forecast)
+        iconBack = findViewById(R.id.iconBack)
 
         if (intent.hasExtra(EXTRA_LATITUDE) && intent.hasExtra(EXTRA_LONGITUDE)) {
             latitude = intent.getDoubleExtra(EXTRA_LATITUDE, 0.0)
@@ -78,6 +82,7 @@ class ForecastActivity : AppCompatActivity() {
             loadForecastData(latitude, longitude)
 
         }
+
     }
 
     private fun loadForecastData(latitude: Double, longitude: Double) {
@@ -143,6 +148,11 @@ class ForecastActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add(request)
 
         setupRecyclerView()
+
+        iconBack.setOnClickListener {
+            val intent = Intent(this, MyLocationActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
