@@ -45,7 +45,7 @@ class ForecastActivity : AppCompatActivity() {
     private lateinit var recycle_forecast : RecyclerView
     private var forecastList = JSONArray()
     private lateinit var forecastAdapter : ForecastAdapter
-    lateinit var iconBack : ImageView
+//    lateinit var iconBack : ImageView
 
     companion object {
         const val EXTRA_LATITUDE = "extra_latitude"
@@ -73,7 +73,7 @@ class ForecastActivity : AppCompatActivity() {
         txt_tommorow_humidity = findViewById(R.id.txt_tommorow_humidity)
         txt_tommorow_humidity_des = findViewById(R.id.txt_tommorow_humidity_des)
         recycle_forecast = findViewById(R.id.recycle_forecast)
-        iconBack = findViewById(R.id.iconBack)
+//        iconBack = findViewById(R.id.iconBack)
 
         if (intent.hasExtra(EXTRA_LATITUDE) && intent.hasExtra(EXTRA_LONGITUDE)) {
             latitude = intent.getDoubleExtra(EXTRA_LATITUDE, 0.0)
@@ -147,14 +147,13 @@ class ForecastActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add(request)
 
         setupRecyclerView()
-
-        iconBack.setOnClickListener {
-            val intent = Intent(this, MyLocationActivity::class.java)
-            startActivity(intent)
-        }
+//
+//        iconBack.setOnClickListener {
+//            val intent = Intent(this, MyLocationActivity::class.java)
+//            startActivity(intent)
+//        }
 
     }
-
 
     private fun setupRecyclerView() {
         forecastAdapter = ForecastAdapter()
