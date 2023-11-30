@@ -45,7 +45,7 @@
             android:layout_marginStart="25dp"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="22dp"
@@ -61,7 +61,7 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
 
@@ -70,14 +70,22 @@
                 android:id="@+id/tv_day_max_temp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 android:text="Monday, 12.15 pm"
                 android:id="@+id/tv_date_and_time"/>
 
-
+            <TextView
+                android:id="@+id/tv_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="280dp"
+                android:layout_marginTop="-50dp"
+                android:text="25 C"
+                android:textColor="@color/black"
+                android:textSize="40dp" />
 
 
         </LinearLayout>
@@ -114,7 +122,7 @@
                 android:inputType="text"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
 
 
