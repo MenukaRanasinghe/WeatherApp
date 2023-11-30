@@ -1,8 +1,10 @@
 package com.example.weatherapp
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -21,6 +23,7 @@ class ManageLocationActivity : AppCompatActivity() {
     private lateinit var txtTime: TextView
     private lateinit var txtTemp: TextView
     private lateinit var txtSearch: EditText
+    private lateinit var iconBack: ImageView
 
     private val apiKey = "a863eb50a11a18b6b9b2d9badc169c24"
 
@@ -33,6 +36,7 @@ class ManageLocationActivity : AppCompatActivity() {
         txtTime = findViewById(R.id.txtTime)
         txtTemp = findViewById(R.id.txtTemp)
         txtSearch = findViewById(R.id.txtSearch)
+        iconBack = findViewById(R.id.iconBack)
 
         // Set the listener for the "Enter" key event
         txtSearch.setOnEditorActionListener { _, actionId, event ->
@@ -43,6 +47,11 @@ class ManageLocationActivity : AppCompatActivity() {
             }
             false
         }
+        iconBack.setOnClickListener {
+            val intent = Intent(this, MyLocationActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun loadWeatherInfo(cityName: String) {
