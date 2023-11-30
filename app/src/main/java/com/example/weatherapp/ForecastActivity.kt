@@ -125,8 +125,7 @@ class ForecastActivity : AppCompatActivity() {
                     } else {
                         txt_tommorow_rain.text = "Unavailable"
                     }
-//                    forecastAdapter.notifyDataSetChanged()
-//                    forecastArray = forecastList
+
 
 
 
@@ -141,7 +140,7 @@ class ForecastActivity : AppCompatActivity() {
                 }
             },
             Response.ErrorListener { error ->
-                // Handle errors
+
                 Toast.makeText(this, "Error fetching forecast data: $error", Toast.LENGTH_SHORT).show()
             }
         )
@@ -158,7 +157,6 @@ class ForecastActivity : AppCompatActivity() {
 
 
     private fun setupRecyclerView() {
-        // Create and set up the adapter
         forecastAdapter = ForecastAdapter()
         recycle_forecast.layoutManager = LinearLayoutManager(this)
         recycle_forecast.adapter = forecastAdapter

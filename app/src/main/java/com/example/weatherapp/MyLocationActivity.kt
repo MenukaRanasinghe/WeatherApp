@@ -66,7 +66,7 @@ class MyLocationActivity : AppCompatActivity() {
 
         requestLocationPermission()
 
-        // Get current location and load weather information
+
         getCurrentLocationAndLoadWeather()
     }
 
@@ -75,10 +75,8 @@ class MyLocationActivity : AppCompatActivity() {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location ->
                     if (location != null) {
-                        // Update TextView with live location using Geocoder
                         updateLocationTextView(location.latitude, location.longitude)
 
-                        // Load weather information based on current location
                         loadWeatherInfo(location.latitude, location.longitude)
 
                         txt_next_seven_days.setOnClickListener(){
@@ -147,18 +145,18 @@ class MyLocationActivity : AppCompatActivity() {
                     val humidity = data.getJSONObject("main").getString("humidity")
                     val windSpeed = data.getJSONObject("wind").getString("speed")
 
-                    // Display temperature in Celsius
+
                     txtTemp.text = "$temp °C"
 
-                    // Display humidity and wind speed
+
                     txtHumidity.text = "$humidity%"
                     txtWind.text = "$windSpeed km/h"
 
-                    // Display UV index (a placeholder value, as it's not directly available)
+
                     val uvIndex = getUVIndex(0.0)
                     txtUV.text = "$uvIndex"
 
-                    // Display current date and time
+
                     val sdfDate = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault())
                     val sdfTime = SimpleDateFormat("h:mm a", Locale.getDefault())
 
@@ -168,7 +166,7 @@ class MyLocationActivity : AppCompatActivity() {
                     txtDate.text = currentDate
                     txtTime.text = currentTime
 
-                    // Display weather icon using Picasso
+
                     val iconCode = data.getJSONArray("weather").getJSONObject(0)
                         .getString("icon")
                     val imgIconUrl =
@@ -176,12 +174,10 @@ class MyLocationActivity : AppCompatActivity() {
 
                     Picasso.get().load(imgIconUrl).into(imgWeather, object : Callback {
                         override fun onSuccess() {
-                            // Image loaded successfully
                             dismissProgressDialog()
                         }
 
                         override fun onError(e: Exception?) {
-                            // Log the error and dismiss the progress dialog
                             Log.e("Picasso", "Error loading image: ${e?.message}")
                             dismissProgressDialog()
                         }
