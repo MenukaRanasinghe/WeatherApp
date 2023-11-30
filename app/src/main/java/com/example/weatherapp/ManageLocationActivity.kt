@@ -16,7 +16,7 @@ class ManageLocationActivity : AppCompatActivity() {
     lateinit var txttime: TextView
     lateinit var txtcity: TextView
     lateinit var txttemperature: TextView
-    lateinit var img: ImageView
+  //  lateinit var img: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
