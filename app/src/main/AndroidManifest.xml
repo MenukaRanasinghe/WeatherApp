@@ -17,9 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherApp"
         tools:targetApi="31">
-        <activity
-            android:name=".ManageLocationActitvityRow"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ManageLocationActitvityRow"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ForecastRow"
             android:exported="true"></activity>
