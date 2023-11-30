@@ -2,6 +2,7 @@ package com.example.weatherapp
 
 import android.Manifest
 import android.app.ProgressDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -34,6 +35,7 @@ private lateinit var txtUV: TextView
 private lateinit var txtWind: TextView
 private lateinit var txtHumidity: TextView
 private lateinit var imgWeather: ImageView
+private lateinit var txt_next_seven_days: TextView
 private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 private val apiKey = "a863eb50a11a18b6b9b2d9badc169c24"
@@ -41,6 +43,7 @@ private val apiKey = "a863eb50a11a18b6b9b2d9badc169c24"
 private var progressDialog: ProgressDialog? = null
 
 class MyLocationActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_location)
@@ -54,6 +57,7 @@ class MyLocationActivity : AppCompatActivity() {
         txtWind = findViewById(R.id.txtWind)
         txtHumidity = findViewById(R.id.txtHumidity)
         imgWeather = findViewById(R.id.imgWeather)
+        txt_next_seven_days = findViewById(R.id.txt_next_seven_days)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -73,6 +77,17 @@ class MyLocationActivity : AppCompatActivity() {
 
                         // Load weather information based on current location
                         loadWeatherInfo(location.latitude, location.longitude)
+
+                        txt_next_seven_days.setOnClickListener(){
+
+                            val intent = Intent(this, ForecastActivity::class.java)
+                            intent.putExtra(ForecastActivity.EXTRA_LATITUDE, location.latitude)
+                            intent.putExtra(ForecastActivity.EXTRA_LONGITUDE, location.longitude)
+                            startActivity(intent)
+//                            startActivity(Intent(this, ForecastActivity::class.java))
+                        }
+
+
                     } else {
                         dismissProgressDialog()
                         showErrorToast("Location not available")
