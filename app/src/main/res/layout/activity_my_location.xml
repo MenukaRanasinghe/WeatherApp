@@ -14,69 +14,66 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:paddingLeft="50px"
+        android:paddingRight="50px">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+                <EditText
+                    android:id="@+id/txtSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/white"
+                    android:ems="8"
+                    android:hint="Search"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtLocation"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:text="Colombo"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tuesday"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/txtLocation"
-                    android:layout_width="286dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="40dp"
-                    android:text="Colombo"
-                    android:textColor="@color/white"
-                    android:textSize="30sp" />
-
-                <ImageView
-                    android:id="@+id/iconLocation"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtTime"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/location"
-                    android:layout_marginRight="40dp"
-                    android:layout_marginTop="40dp"/>
+                    android:textAlignment="center"
+                    android:text="10.15"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtTemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="20dp"
                 android:text="25"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="40sp" />
-
-                <TextView
-                    android:id="@+id/txtDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Tuesday"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/txtTime"
-                    android:layout_width="128dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="10.15"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
 
             <ImageView
                 android:id="@+id/imgWeather"
@@ -97,24 +94,17 @@
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/txt_next_seven_days"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="40dp"
-                android:text="Next 7 Days"
-                android:textAlignment="textEnd"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/secondary"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="40px">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="149dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="40dp"
-                android:background="@color/secondary"
+                android:layout_height="wrap_content"
+                android:padding="20px"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -239,6 +229,42 @@
 
 
             </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/txt_next_seven_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Next 5 Days"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iconLocation"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/location" />
+
+            <TextView
+                android:id="@+id/txtAddLocation"
+                android:layout_width="289dp"
+                android:layout_height="wrap_content"
+                android:text="Add Location"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+
+
+        </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

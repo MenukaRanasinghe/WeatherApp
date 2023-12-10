@@ -9,6 +9,8 @@ import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,13 +21,18 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.weatherapp.ForecastActivity.Companion.EXTRA_LATITUDE
+import com.example.weatherapp.ForecastActivity.Companion.EXTRA_LONGITUDE
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import org.json.JSONException
+import org.json.JSONObject
+import org.w3c.dom.Text
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 private lateinit var txtLocation: TextView
 private lateinit var txtWeather: TextView
@@ -38,6 +45,7 @@ private lateinit var txtHumidity: TextView
 private lateinit var imgWeather: ImageView
 private lateinit var txt_next_seven_days: TextView
 private lateinit var iconLocation: ImageView
+private lateinit var txtSearch: TextView
 private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 private val apiKey = "a863eb50a11a18b6b9b2d9badc169c24"
@@ -61,13 +69,129 @@ class MyLocationActivity : AppCompatActivity() {
         imgWeather = findViewById(R.id.imgWeather)
         iconLocation = findViewById(R.id.iconLocation)
         txt_next_seven_days = findViewById(R.id.txt_next_seven_days)
+        txtSearch = findViewById(R.id.txtSearch)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         requestLocationPermission()
-
-
         getCurrentLocationAndLoadWeather()
+
+
+        txtSearch.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || (event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)) {
+                val cityName = txtSearch.text.toString().trim()
+                if (cityName.isNotEmpty()) {
+
+                    loadWeatherInfo(cityName)
+                }else{
+                    getCurrentLocationAndLoadWeather()
+                }
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+
+    }
+
+    private fun loadWeatherInfo(cityName: String) {
+        val url =
+            "https://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=$apiKey"
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            Response.Listener { response ->
+                parseWeatherDetails(response)
+//                loadWeatherInfo()
+            },
+            Response.ErrorListener { error ->
+                error.printStackTrace()
+            })
+
+
+        Volley.newRequestQueue(this).add(request)
+    }
+
+    private fun parseWeatherDetails(response: JSONObject) {
+        try {
+            val cityName = response.getString("name")
+            txtLocation.text = cityName
+
+            val main = response.getJSONObject("main")
+            val temp = main.getString("temp")
+            val humidity = main.getString("humidity")
+            val windSpeed = response.getJSONObject("wind").getString("speed")
+            val uvIndex = getUVIndex(0.0)
+            val coordObject = response.getJSONObject("coord")
+            val latitude = coordObject.getDouble("lat")
+            val longitude = coordObject.getDouble("lon")
+
+            txtTemp.text = "$temp °C"
+            txtHumidity.text = "$humidity%"
+            txtWind.text = "$windSpeed km/h"
+            txtUV.text = "$uvIndex"
+
+            Log.d("WeatherApp", "Latitude: $latitude, Longitude: $longitude")
+
+            val timeZone = getTimeZone(latitude, longitude)
+
+            txt_next_seven_days.setOnClickListener(){
+
+                val intent = Intent(this, ForecastActivity::class.java)
+                intent.putExtra(EXTRA_LATITUDE, latitude)
+                intent.putExtra(EXTRA_LONGITUDE, longitude)
+                startActivity(intent)
+                startActivity(Intent(this, ForecastActivity::class.java))
+            }
+
+            val sdfDate = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault())
+            val sdfTime = SimpleDateFormat("h:mm a", Locale.getDefault())
+
+            sdfDate.timeZone = timeZone
+            sdfTime.timeZone = timeZone
+
+            val currentDate = sdfDate.format(Date())
+            val currentTime = sdfTime.format(Date())
+
+            Log.d("WeatherApp", "Current Date: $currentDate")
+            Log.d("WeatherApp", "Current Time: $currentTime")
+
+            runOnUiThread {
+                txtDate.text = currentDate
+                txtTime.text = currentTime
+            }
+
+            val iconCode = response.getJSONArray("weather").getJSONObject(0)
+                .getString("icon")
+            val imgIconUrl =
+                "https://openweathermap.org/img/w/$iconCode.png"
+
+            Picasso.get().load(imgIconUrl).into(imgWeather, object : Callback {
+                override fun onSuccess() {
+                    dismissProgressDialog()
+                }
+
+                override fun onError(e: Exception?) {
+                    Log.e("Picasso", "Error loading image: ${e?.message}")
+                    dismissProgressDialog()
+                }
+            })
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getTimeZone(latitude: Double, longitude: Double): TimeZone {
+        val geoCoder = Geocoder(this, Locale.getDefault())
+        val addresses = geoCoder.getFromLocation(latitude, longitude, 1)
+
+        return if (addresses != null) {
+            val timeZoneId = java.util.TimeZone.getDefault().id
+            TimeZone.getTimeZone(timeZoneId)
+
+        } else {
+            TimeZone.getDefault()
+        }
     }
 
     private fun getCurrentLocationAndLoadWeather() {
@@ -82,17 +206,15 @@ class MyLocationActivity : AppCompatActivity() {
                         txt_next_seven_days.setOnClickListener(){
 
                             val intent = Intent(this, ForecastActivity::class.java)
-                            intent.putExtra(ForecastActivity.EXTRA_LATITUDE, location.latitude)
-                            intent.putExtra(ForecastActivity.EXTRA_LONGITUDE, location.longitude)
+                            intent.putExtra(EXTRA_LATITUDE, location.latitude)
+                            intent.putExtra(EXTRA_LONGITUDE, location.longitude)
                             startActivity(intent)
-//                            startActivity(Intent(this, ForecastActivity::class.java))
+                            startActivity(Intent(this, ForecastActivity::class.java))
                         }
                         iconLocation.setOnClickListener {
                             val intent = Intent(this, ManageLocationActivity::class.java)
                             startActivity(intent)
                         }
-
-
 
                     } else {
                         dismissProgressDialog()
